@@ -55,7 +55,7 @@ const CarDetail = ({ model }: Props) => {
         <ambientLight intensity={5} />
         <directionalLight intensity={2} />
         <CarModel
-          url="/assets/cars/${dir}/scene.gltf"
+          url={`/assets/cars/${dir}/scene.gltf`}
           scale={scale}
           rotation={rotation}
         />
