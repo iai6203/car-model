@@ -36,11 +36,19 @@ const car: { [key: string]: AppTypes.CarModel } = {
 }
 
 const CarDetail = ({ model }: Props) => {
+  const [isMobile, setIsMobile] = React.useState<boolean>(false)
+
   const { dir, scale, rotation } = model
+
+  React.useEffect(() => {
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      setIsMobile(true)
+    }
+  }, [])
 
   return (
     <>
-      <Link href="/" passHref>
+      <Link href='/' passHref>
         <a
           className={cn(
             'fixed top-0 left-0 mt-6 ml-6 px-5 py-4 flex gap-2 items-center bg-black rounded shadow z-50',
@@ -51,22 +59,26 @@ const CarDetail = ({ model }: Props) => {
           <span className={cn('text-white text-sm')}>목록</span>
         </a>
       </Link>
-      <Canvas>
-        <ambientLight intensity={5} />
-        <directionalLight intensity={2} />
-        <CarModel
-          url={`/assets/cars/${dir}/scene.gltf`}
-          scale={scale}
-          rotation={rotation}
-        />
-      </Canvas>
+      {
+        isMobile && (
+          <Canvas>
+            <ambientLight intensity={5} />
+            <directionalLight intensity={2} />
+            <CarModel
+              url={`/assets/cars/${dir}/scene.gltf`}
+              scale={scale}
+              rotation={rotation}
+            />
+          </Canvas>
+        )
+      }
       <div
         className={cn(
           'fixed right-0 bottom-0 left-0 mb-20 flex justify-center',
         )}
       >
         <h6 className={cn('text-black/50 text-base font-bold tracking-wider')}>
-          3D 모델을 불러오는 데 시간이 소요될 수 있습니다.
+          {isMobile ? '죄송합니다. 모바일은 지원되지 않습니다.' : '3D 모델을 불러온느 데 시간이 소요될 수 있습니다.'}
         </h6>
       </div>
     </>
